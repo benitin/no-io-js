@@ -1,0 +1,137 @@
+<html>
+<head>
+    <title>Chat-Socket.io</title>
+    <link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="css/chat.css"/>
+</head>
+<body>
+    <div class="container">
+        <!-- Chat Messages -->
+        <div class="row chat-window col-xs-5 col-md-3" id="chat_window_1" style="margin-left:10px;">
+            <div class="col-xs-12 col-md-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading top-bar">
+                        <div class="col-md-8 col-xs-8">
+                            <h3 class="panel-title"><span class="glyphicon glyphicon-comment"></span> <span id="nicktitulo">Login</span> </h3>
+                        </div>
+                        <div class="col-md-4 col-xs-4" style="text-align: right;">
+                            <a href="#"><span id="minim_chat_window" class="glyphicon glyphicon-minus icon_minim"></span></a>
+                            <a href="#"><span class="glyphicon glyphicon-remove icon_close" data-id="chat_window_1"></span></a>
+                        </div>
+                    </div>
+                    <div class="panel-body msg_container_base" id="messages">
+                        
+                        <div class="row msg_container base_sent">
+                            <div class="col-md-10 col-xs-10">
+                                <div class="messages msg_sent">
+                                    <p>that mongodb thing looks good, huh?
+                                    tiny master db, and huge document store</p>
+                                    <time datetime="2009-11-13T20:00">Timothy • 51 min</time>
+                                </div>
+                            </div>
+                            <div class="col-md-2 col-xs-2 avatar">
+                                <img src="img/Original-Facebook-Geek-Profile-Avatar-1.jpg" class=" img-responsive ">
+                            </div>
+                        </div>
+                        <div class="row msg_container base_receive">
+                            <div class="col-md-2 col-xs-2 avatar">
+                                <img src="img/Original-Facebook-Geek-Profile-Avatar-1.jpg" class=" img-responsive ">
+                            </div>
+                            <div class="col-md-10 col-xs-10">
+                                <div class="messages msg_receive">
+                                    <p>that mongodb thing looks good, huh?
+                                    tiny master db, and huge document store</p>
+                                    <time datetime="2009-11-13T20:00">Timothy • 51 min</time>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        
+                        
+                    </div>
+                    <form action="">
+                        <div class="panel-footer">
+                            <div class="input-group">
+                                <input id="btn-input" type="text" class="form-control input-sm chat_input" placeholder="Write your message here..." autocomplete="off" />
+                                <span class="input-group-btn">
+                                <button class="btn btn-primary btn-sm" id="btn-chat">Login</button>
+                                </span>
+                            </div>
+                        </div>
+                    </form>
+                    
+                </div>
+            </div>
+        </div>
+        <!--End Chat Messages -->
+        <!-- Chat Messages Entry -->
+        <div class="btn-group dropup">
+            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                <span class="glyphicon glyphicon-cog"></span>
+                <span class="sr-only">Toggle Dropdown</span>
+            </button>
+            <ul class="dropdown-menu" role="menu">
+                <li><a href="#" id="new_chat"><span class="glyphicon glyphicon-plus"></span> Novo</a></li>
+                <li><a href="#"><span class="glyphicon glyphicon-list"></span> Ver outras</a></li>
+                <li><a href="#"><span class="glyphicon glyphicon-remove"></span> Fechar Tudo</a></li>
+                <li class="divider"></li>
+                <li><a href="#"><span class="glyphicon glyphicon-eye-close"></span> Invisivel</a></li>
+            </ul>
+        </div>
+    </div>
+    <script type="text/javascript" src="/socket.io/socket.io.js"></script>
+    <script type="text/javascript" src="js/jquery-1.11.1.js"></script>
+    <script type="text/javascript" src="js/chat.js"></script>
+    <script type="text/javascript">
+      var socket = io()
+      var sended = false
+      var nick = null
+      $('form').submit(function(){
+        if($('#btn-chat').text()=='Send'){
+            socket.emit('mensaje chat', $('#btn-input').val())
+        }else{
+            nick = $('#btn-input').val()
+            socket.emit('nick', nick, function(data){
+                if(data){
+                    $('#btn-chat').text('Send')
+                    $('#nicktitulo').text('Chat - '+nick)
+                }else{
+                }
+            })
+        }
+        
+        $('#btn-input').val('')
+        return false
+      })
+      socket.on('mensaje chat', function(msg){
+        //$('#messages').append($('<li>').text(msg))
+        if(msg.nick==nick){
+            $('#messages').append('<div class="row msg_container base_sent">'+
+                            '<div class="col-xs-10 col-md-10">'+
+                                '<div class="messages msg_sent">'+
+                                    '<p>'+msg.mensaje+'</p>'+
+                                    '<time datetime="2009-11-13T20:00">'+msg.nick+' • 51 min</time>'+
+                                '</div>'+
+                            '</div>'+
+                            '<div class="col-md-2 col-xs-2 avatar">'+
+                                '<img src="img/Original-Facebook-Geek-Profile-Avatar-1.jpg" class=" img-responsive ">'+
+                            '</div>'+
+                        '</div>')
+        }else{
+            $('#messages').append('<div class="row msg_container base_receive">'+
+                            '<div class="col-xs-10 col-md-10">'+
+                                '<div class="messages msg_sent">'+
+                                    '<p>'+msg.mensaje+'</p>'+
+                                    '<time datetime="2009-11-13T20:00">'+msg.nick+' • 51 min</time>'+
+                                '</div>'+
+                            '</div>'+
+                            '<div class="col-md-2 col-xs-2 avatar">'+
+                                '<img src="img/Original-Facebook-Geek-Profile-Avatar-1.jpg" class=" img-responsive ">'+
+                            '</div>'+
+                        '</div>')
+        }
+        
+      })
+    </script>
+</body>
+</html>
