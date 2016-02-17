@@ -15,5 +15,9 @@
   "bugs": {
     "url": "https://github.com/benitin/no-io-js/issues"
   },
-  "homepage": "https://github.com/benitin/no-io-js#readme"
+  "homepage": "https://github.com/benitin/no-io-js#readme",
+  "dependencies": {
+    "express": "^4.13.4",
+    "socket.io": "^1.4.5"
+  }
 }
