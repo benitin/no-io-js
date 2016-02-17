@@ -1,0 +1,19 @@
+{
+  "name": "no-io-js",
+  "version": "0.0.1",
+  "description": "Nodejs Socketio",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/benitin/no-io-js.git"
+  },
+  "author": "Benito Vargas Cuellar",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/benitin/no-io-js/issues"
+  },
+  "homepage": "https://github.com/benitin/no-io-js#readme"
+}
